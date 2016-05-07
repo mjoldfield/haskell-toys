@@ -1,0 +1,24 @@
+
+./app/Main.hs,52
+module Main Main0,1
+main main2,3
+main main3,4
+
+./Setup.hs,15
+main main1,2
+
+./src/Toy/Image.hs,321
+module Toy.ImageToy.Image0,1
+type ToyImage ToyImage13,14
+processImage' processImage'15,16
+processImage' processImage'16,17
+processImage processImage20,21
+processImage processImage21,22
+processImages processImages26,27
+processImages processImages27,28
+loadImage loadImage29,30
+loadImage loadImage30,31
+
+./test/Spec.hs,30
+main main0,1
+main main1,2
