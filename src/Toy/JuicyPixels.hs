@@ -69,7 +69,7 @@
 module Toy.JuicyPixels
     ( ImageRGB8
       , loadImage, loadImageThen
-      , transformImagePNG, transformImagesInArgsPNG
+      , transformImagePNG, transformImagesInArgsPNG, transformImagePNG'
       , transformImage,    transformImagesInArgs
       , describeImage,     describeImagesInArgs
       , iPixelList, pixelList
@@ -132,6 +132,11 @@ transformImagesInArgs a b c d = processArgs (transformImage a b c d)
 -- writing PNG files. 
 transformImagePNG :: (ImageRGB8 -> ImageRGB8) -> (String -> String) -> FilePath -> IO ()
 transformImagePNG = transformImage writePng "png"
+
+-- |'transformImagePNG'' is just 'transformImagePNG' where the output basename is just the input
+-- with -x appended.
+transformImagePNG' :: (ImageRGB8 -> ImageRGB8) -> FilePath -> IO ()
+transformImagePNG' tx = transformImagePNG tx (++ "-x")
 
 -- |'transformImagesInArgsPNG' is just 'transformImagesInArgs' specialized for
 -- writing PNG files. 
