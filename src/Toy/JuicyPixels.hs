@@ -143,11 +143,11 @@ transformImagePNG' tx = transformImagePNG tx (++ "-x")
 transformImagesInArgsPNG :: (ImageRGB8 -> ImageRGB8) -> (String -> String) -> IO ()
 transformImagesInArgsPNG a b = processArgs (transformImagePNG a b)
 
-describeImage :: (ImageRGB8 -> String) -> FilePath -> IO ()
-describeImage f inf = loadImageThen (pp . f) inf
+describeImage :: Show a => (ImageRGB8 -> a) -> FilePath -> IO ()
+describeImage f inf = loadImageThen (pp . show . f) inf
          where pp msg = putStrLn $ inf ++ ":\n" ++ msg ++ "\n"
 
-describeImagesInArgs :: (ImageRGB8 -> String) -> IO ()
+describeImagesInArgs :: Show a => (ImageRGB8 -> a) -> IO ()
 describeImagesInArgs f = processArgs (describeImage f)
 
 -- |'iPixelList' turns an image into a list of (x,y,pixel) tuples.
