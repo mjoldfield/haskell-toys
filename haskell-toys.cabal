@@ -53,6 +53,16 @@ executable ht-image-levelmasks
                      , JuicyPixels
   default-language:    Haskell2010
 
+executable ht-image-bitmasks
+  hs-source-dirs:      app
+  main-is:             ht-image-bitmasks.hs
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  build-depends:       base
+                     , containers
+                     , haskell-toys
+                     , JuicyPixels
+  default-language:    Haskell2010
+
 test-suite ht-juicypixels-test
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
