@@ -69,9 +69,10 @@
 module Toy.JuicyPixels
     ( ImageRGB8
       , loadImage, loadImageThen
-      , transformImagePNG, transformImagesInArgsPNG, transformImagePNG'
-      , transformImage,    transformImagesInArgs
-      , describeImage,     describeImagesInArgs
+      , transformImagePNGs, transformImagesInArgsPNGs
+      , transformImagePNG,  transformImagesInArgsPNG, transformImagePNG'
+      , transformImage,     transformImagesInArgs
+      , describeImage,      describeImagesInArgs
       , iPixelList, pixelList
       , liftRGB, memoizeWord8
     ) where
@@ -132,6 +133,18 @@ transformImagesInArgs a b c d = processArgs (transformImage a b c d)
 -- writing PNG files. 
 transformImagePNG :: (ImageRGB8 -> ImageRGB8) -> (String -> String) -> FilePath -> IO ()
 transformImagePNG = transformImage writePng "png"
+
+-- |'transformImagePNGs is a generalization of transformImage where we transform
+-- one image into multiple PNGs.
+transformImagePNGs :: (ImageRGB8 -> [(ImageRGB8,String -> String)]) -> FilePath -> IO ()
+transformImagePNGs tx filename = loadImageThen (mapM_ savePng . tx) filename
+   where savePng (image, txFilename) = writePng (txfn filename) image
+           where txfn = (\f -> addExtension f "png") . txFilename . dropExtension
+
+-- |'transformImagesInArgsPNGs' maps 'transformImagePNGs' over all the command
+-- line arguments.
+transformImagesInArgsPNGs :: (ImageRGB8 -> [(ImageRGB8,String -> String)]) -> IO ()
+transformImagesInArgsPNGs a = processArgs (transformImagePNGs a)
 
 -- |'transformImagePNG'' is just 'transformImagePNG' where the output basename is just the input
 -- with -x appended.
