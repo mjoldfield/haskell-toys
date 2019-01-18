@@ -83,7 +83,6 @@ import Codec.Picture
 
 import Control.Monad
 
-import Data.Either
 import Data.Either.Combinators
 import Data.Word
 

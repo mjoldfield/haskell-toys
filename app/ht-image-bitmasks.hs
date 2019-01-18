@@ -2,21 +2,23 @@ import Toy.JuicyPixels
 import Codec.Picture
 import Data.Bits
 
-import qualified Data.List as L
 
 import Text.Printf
 
+main :: IO ()
 main = transformImagesInArgsPNGs bitMasks
 
 bitMasks :: ImageRGB8 -> [(ImageRGB8,String -> String)]
 bitMasks img = [ (mask ((\x -> x .&. i /= 0) . g) img, mungeFilename c i)
-               | j <- [0..7], let i = 2^j
+               | j <- [0..7] :: [Int]
+               , let i = 2^j
                , (g,c) <- zip [getR, getG, getB] "rgb"
                ]
-   where getR (PixelRGB8 r g b) = r
-         getG (PixelRGB8 r g b) = g
-         getB (PixelRGB8 r g b) = b
+   where getR (PixelRGB8 r _ _) = r
+         getG (PixelRGB8 _ g _) = g
+         getB (PixelRGB8 _ _ b) = b
 
+mungeFilename :: PrintfType p => Char -> Pixel8 -> String -> p
 mungeFilename col i s = printf "%s-%c-%02x" s col i
 
 mask :: (PixelRGB8 -> Bool) -> ImageRGB8 -> ImageRGB8

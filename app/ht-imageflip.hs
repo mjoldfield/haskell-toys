@@ -5,6 +5,7 @@ import Data.Word
 import Data.Bits
 import qualified Data.List as L
 
+main :: IO ()
 main = transformImagesInArgsPNG flipImage (++ "-f")
 
 flipImage :: ImageRGB8 -> ImageRGB8

@@ -5,6 +5,7 @@ import qualified Data.List as L
 
 import Text.Printf
 
+main :: IO ()
 main = transformImagesInArgsPNGs levelMasks
 
 levelMasks :: ImageRGB8 -> [(ImageRGB8,String -> String)]
@@ -13,6 +14,7 @@ levelMasks img = map (\p -> (mask p img,  mungeFilename p)) $ pixels img
 pixels :: ImageRGB8 -> [PixelRGB8]
 pixels = map head . L.group . L.sort . pixelList
 
+mungeFilename :: PrintfType p => PixelRGB8 -> String -> p
 mungeFilename (PixelRGB8 r g b) s = printf "%s-%02x%02x%02x" s r g b
 
 mask :: PixelRGB8 -> ImageRGB8 -> ImageRGB8
