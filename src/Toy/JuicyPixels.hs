@@ -73,6 +73,7 @@ module Toy.JuicyPixels
       , transformImagePNG,  transformImagesInArgsPNG, transformImagePNG'
       , transformImage,     transformImagesInArgs
       , describeImage,      describeImagesInArgs
+      , describeImage',     describeImagesInArgs'
       , iPixelList, pixelList
       , liftRGB, memoizeWord8
     ) where
@@ -155,12 +156,18 @@ transformImagePNG' tx = transformImagePNG tx (++ "-x")
 transformImagesInArgsPNG :: (ImageRGB8 -> ImageRGB8) -> (String -> String) -> IO ()
 transformImagesInArgsPNG a b = processArgs (transformImagePNG a b)
 
-describeImage :: Show a => (ImageRGB8 -> a) -> FilePath -> IO ()
-describeImage f inf = loadImageThen (pp . show . f) inf
+describeImage' :: (ImageRGB8 -> String) -> FilePath -> IO ()
+describeImage' f inf = loadImageThen (pp . f) inf
          where pp msg = putStrLn $ inf ++ ":\n" ++ msg ++ "\n"
 
+describeImagesInArgs' :: (ImageRGB8 -> String) -> IO ()
+describeImagesInArgs' f = processArgs (describeImage' f)
+
+describeImage :: Show a => (ImageRGB8 -> a) -> FilePath -> IO ()
+describeImage f = describeImage' (show . f)
+
 describeImagesInArgs :: Show a => (ImageRGB8 -> a) -> IO ()
-describeImagesInArgs f = processArgs (describeImage f)
+describeImagesInArgs f = describeImagesInArgs' (show . f)
 
 -- |'iPixelList' turns an image into a list of (x,y,pixel) tuples.
 iPixelList :: ImageRGB8 -> [(Int,Int,PixelRGB8)]
